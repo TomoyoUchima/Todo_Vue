@@ -7,13 +7,17 @@
 </head>
 <body>
 
-  <div id="app">
-   <!-- <p>Hello {{ name }}</p>  -->
-   <p>Hello {{ name.toUpperCase() }}</p> <!-- JSの処理も書ける -->
-   <p><input type="text" v-model="name"></p>
-   <!-- UI から data へ反映させる。input タグに v-model="name" としてあげると、このフォームに入力された値が name と結びつくようになる。 -->
+  <div id="app" class="container">
+    <h1>My Todos</h1>
+    <ul>
+      <li v-for="todo in todos">{{ todo }}</li>
+    </ul>
+    <!-- <form v-on:submit="addItem"> -->
+    <form @submit.prevent="addItem">
+      <input type="text" v-model="newItem">
+      <input type="submit" value="Add">
+    </form>
   </div>
-
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="main.js"></script>
