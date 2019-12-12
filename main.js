@@ -1,5 +1,3 @@
-// Vue.js の基本ですが、双方向データバインディングができるというのが大きな特徴になります。
-// データバインディングというのは data と UI を結び付けるという意味で、双方向というのは data を更新すれば UI が更新されて、 UI を更新すれば data が更新されるという意味になります。
 
 (function() {
 'use strict';
@@ -10,18 +8,24 @@ var vm = new Vue({
   el: "#app",
   data: {
     newItem: '',
-    todos: [
-      'task1',
-      'task2',
-      'task3',
-    ]
+    todos: [{
+      title: 'task1',
+      isDone: false
+    }, {
+      title: 'task2',
+      isDone: false
+    }, {
+      title: 'task3',
+      isDone: true
+    }]
   },
   methods: {
-    // addItem: function(e){
-    //   e.preventDefault(); //規定のページが遷移することを無効化する
-    //   this.todos.push(this.newItem);
     addItem: function(){
-      this.todos.push(this.newItem);
+      var item = {
+        title: this.newItem,
+        isDone: false
+      };
+      this.todos.push(item);
       this.newItem = '';
     },
     deleteItem: function(index) {
