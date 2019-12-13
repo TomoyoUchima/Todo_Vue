@@ -8,33 +8,10 @@ var vm = new Vue({
   el: "#app",
   data: {
     newItem: '',
-    todos: [{
-      title: 'task1',
-      isDone: false
-    }, {
-      title: 'task2',
-      isDone: false
-    }, {
-      title: 'task3',
-      isDone: true
-    }]
+    todos: []
   },
-  //指定したデータの変更を監視してくれます。todos に変更があったときには次の処理をしなさいよ、と書いてあげます。
 
-  // watch: {
-  //   todos: function() {
-  //     localStorage.setItem('todos', JSON.stringify(this.todos)); //localStorage.setItem(key, value);　//keyとvalueをペアにしてデータを保存。
-  //     // LocalStorage にデータを保存したいので、 setItem() としつつ、 todos というキーで todos の値を JSON 形式にしてあげて保存してあげましょう。
-  //     alert('Data Saved!');
-  //   }
-  // },
-
-//   ただし、チェックしたときには Data saved! と出ていないのがわかるかと思います。
-// これはなぜかというと、単に todos をこのように watch しただけだと、 todos の配列自体に変更があったときにはこちらの処理は実行してくれるのですが、配列の中身の要素、今回だと title だとか isDone の変更までは監視してくれないという仕組みになっているためです。
-// これを直すには、データの中身も含めて監視する必要があって、 deep watcher という仕組みを使わないといけません。
-
-//todos の中身を監視するときに、実際に行う処理は handler で書いてあげて、 deep オプションを true にしてあげれば OK です。
-watch: {
+  watch: {
   todos: {
     handler: function() {
       localStorage.setItem('todos', JSON.stringify(this.todos));
@@ -43,6 +20,15 @@ watch: {
     deep: true
   }
 },
+
+// 保存されたデータをどのタイミングで呼び出すかですが、 Vue.js のインスタンスにはライフサイクルが定義されていて、今回はアプリがページにマウントされるタイミングでデータを読み込んであげましょう。
+mounted: function() {
+//   //this.todos に対して JSON を parse しつつ、 localStorage から todos のキーでデータを getItem() してあげれば OK ですね。
+// JSON の parse が上手くいかなかった場合は、空の配列にしたいので || 演算子を使ってあげて、このように書いてあげてもいいでしょう。
+// あとは todos の初期化もいらないので、ただの空配列にしておきます。
+  this.todos = JSON.parse(localStorage.getItem('todos')) || []
+},
+
   methods: {
     addItem: function(){
       var item = {
