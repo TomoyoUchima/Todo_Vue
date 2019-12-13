@@ -32,20 +32,29 @@ var vm = new Vue({
       if (confirm("Are you sure?")) {
         this.todos.splice(index, 1);
       }
+    },
+    purge: function() {
+      if (!confirm('delete fiished?')) {
+        return;
+      } 
+      // this.todos = this.todos.filter(function(todo) {
+      //   return !todo.isDone;
+      // });
+      this.todos = this.remaining;
     }
   },
 //computed → データから動的にプロパティを計算してくれる、算出プロパティ。
   computed: {
-    remaining: function() { //remaining という名前にしてあげて、データから自動的に remaining を算出して、プロパティにする。
-      var items = this.todos.filter(function(todo) {
-        return !todo.isDone;
-        // console.log(todo.isDone);
+    remaining: function() { 
+      // var items = this.todos.filter(function(todo) {
+      //   return !todo.isDone; //まだ終わっていないタスクがitemsに入る。
+      // });
+      // return items.length;
+      return this.todos.filter(function(todo) {
+        return !todo.isDone; 
       });
-      return items.length;
-
     }
   }
 })
-
 
 })();
