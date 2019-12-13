@@ -19,6 +19,30 @@ var vm = new Vue({
       isDone: true
     }]
   },
+  //指定したデータの変更を監視してくれます。todos に変更があったときには次の処理をしなさいよ、と書いてあげます。
+
+  // watch: {
+  //   todos: function() {
+  //     localStorage.setItem('todos', JSON.stringify(this.todos)); //localStorage.setItem(key, value);　//keyとvalueをペアにしてデータを保存。
+  //     // LocalStorage にデータを保存したいので、 setItem() としつつ、 todos というキーで todos の値を JSON 形式にしてあげて保存してあげましょう。
+  //     alert('Data Saved!');
+  //   }
+  // },
+
+//   ただし、チェックしたときには Data saved! と出ていないのがわかるかと思います。
+// これはなぜかというと、単に todos をこのように watch しただけだと、 todos の配列自体に変更があったときにはこちらの処理は実行してくれるのですが、配列の中身の要素、今回だと title だとか isDone の変更までは監視してくれないという仕組みになっているためです。
+// これを直すには、データの中身も含めて監視する必要があって、 deep watcher という仕組みを使わないといけません。
+
+//todos の中身を監視するときに、実際に行う処理は handler で書いてあげて、 deep オプションを true にしてあげれば OK です。
+watch: {
+  todos: {
+    handler: function() {
+      localStorage.setItem('todos', JSON.stringify(this.todos));
+      // alert('Data saved!');
+    },
+    deep: true
+  }
+},
   methods: {
     addItem: function(){
       var item = {
@@ -37,20 +61,12 @@ var vm = new Vue({
       if (!confirm('delete fiished?')) {
         return;
       } 
-      // this.todos = this.todos.filter(function(todo) {
-      //   return !todo.isDone;
-      // });
       this.todos = this.remaining;
     }
   },
-//computed → データから動的にプロパティを計算してくれる、算出プロパティ。
   computed: {
     remaining: function() { 
-      // var items = this.todos.filter(function(todo) {
-      //   return !todo.isDone; //まだ終わっていないタスクがitemsに入る。
-      // });
-      // return items.length;
-      return this.todos.filter(function(todo) {
+      return this.todos.filter(function(todo) {//まだ終わっていないタスクが返る。
         return !todo.isDone; 
       });
     }
