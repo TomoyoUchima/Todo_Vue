@@ -8,7 +8,8 @@ var vm = new Vue({
   el: "#app",
   data: {
     newItem: '',
-    todos: []
+    todos: [],
+
   },
 
   watch: {
@@ -18,7 +19,7 @@ var vm = new Vue({
       // alert('Data saved!');
     },
     deep: true
-  }
+  } 
 },
 
 // 保存されたデータをどのタイミングで呼び出すかですが、 Vue.js のインスタンスにはライフサイクルが定義されていて、今回はアプリがページにマウントされるタイミングでデータを読み込んであげましょう。
@@ -37,6 +38,8 @@ mounted: function() {
       };
       this.todos.push(item);
       this.newItem = '';
+      console.log(this.todos);
+      console.log(this.todos[0].isDone);
     },
     deleteItem: function(index) {
       if (confirm("Are you sure?")) {
@@ -48,15 +51,32 @@ mounted: function() {
         return;
       } 
       this.todos = this.remaining;
-    }
+    },
+    selectAll: function() {
+      for(var i=0; i<this.todos.length; i++) {
+        this.todos[i].isDone = true
+        console.log(this.todos[i].isDone);
+      } //for
+    }, //selectAll
+    rmvAll: function() {
+      for(var i=0; i<this.todos.length; i++) {
+            this.todos[i].isDone = false
+          }             
+      } 
+
   },
+
   computed: {
     remaining: function() { 
       return this.todos.filter(function(todo) {//まだ終わっていないタスクが返る。
         return !todo.isDone; 
+        
       });
     }
   }
 })
+
+// var result = this.todos.every(function(val, index, array){
+//   return (val.isDone)})
 
 })();
