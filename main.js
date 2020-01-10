@@ -38,8 +38,8 @@ mounted: function() {
       };
       this.todos.push(item);
       this.newItem = '';
-      console.log(this.todos);
-      console.log(this.todos[0].isDone);
+      // console.log(this.todos);
+      // console.log(this.todos[0].isDone);
     },
     deleteItem: function(index) {
       if (confirm("Are you sure?")) {
